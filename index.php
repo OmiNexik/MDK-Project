@@ -1,12 +1,16 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['users'])) {
-    $_SESSION['users'] = [];
-}
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "mdk_project";
 
-$users = &$_SESSION['users'];
-$message = '';
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Подключение не удалось: " . $conn->connect_error);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $action = $_POST['action'];
@@ -17,27 +21,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $password = trim($_POST['password']);
 
         if ($name && $email && $password) {
-            $emailExists = false;
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            foreach ($users as $user) {
-                if ($user['email'] === $email) {
-                    $emailExists = true;
-                    break;
-                }
-            }
-
-            if ($emailExists) {
+            if ($result->num_rows > 0) {
                 $message = 'Пользователь с таким Email уже зарегистрирован.';
                 $messageType = 'error';
             } else {
-                $users[] = [
-                    'name' => $name,
-                    'email' => $email,
-                    'password' => password_hash($password, PASSWORD_BCRYPT),
-                ];
-                $message = 'Регистрация успешна! Теперь вы можете войти.';
-                $messageType = 'success';
+                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+                $stmt->bind_param("sss", $name, $email, $hashedPassword);
+                if ($stmt->execute()) {
+                    $message = 'Регистрация успешна! Теперь вы можете войти.';
+                    $messageType = 'success';
+                } else {
+                    $message = 'Произошла ошибка при регистрации.';
+                    $messageType = 'error';
+                }
             }
+
+            $stmt->close();
         } else {
             $message = 'Пожалуйста, заполните все поля.';
             $messageType = 'error';
@@ -49,28 +54,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $password = trim($_POST['password']);
 
         if ($email && $password) {
-            $userFound = false;
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
 
-            foreach ($users as $user) {
-                if ($user['email'] === $email && password_verify($password, $user['password'])) {
-                    $_SESSION['user'] = $user['name'];
-                    $userFound = true;
-                    header('Location: loginpage.html');
-                    exit;
-                }
-            }
-
-            if (!$userFound) {
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user'] = $user['name'];
+                header('Location: welcome.php');
+                exit;
+            } else {
                 $message = 'Неверный Email или пароль.';
                 $messageType = 'error';
             }
+
+            $stmt->close();
         } else {
             $message = 'Пожалуйста, заполните все поля.';
             $messageType = 'error';
         }
     }
 }
+
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,10 +125,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 <script>
     <?php if (isset($message) && isset($messageType)): ?>
-    var toast = document.getElementById('toast');
-    toast.classList.add('show');
+    document.getElementById("toast").classList.add("show");
     setTimeout(function() {
-        toast.classList.remove('show');
+        document.getElementById("toast").classList.remove("show");
     }, 3000);
     <?php endif; ?>
 </script>

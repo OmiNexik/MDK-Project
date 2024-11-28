@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$proverka = $_SESSION["user"];
 $servername = "localhost";
 $username = "root";
 $password = "root";

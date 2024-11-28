@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             if ($emailExists) {
                 $message = 'Пользователь с таким Email уже зарегистрирован.';
+                $messageType = 'error';
             } else {
                 $users[] = [
                     'name' => $name,
@@ -35,9 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     'password' => password_hash($password, PASSWORD_BCRYPT),
                 ];
                 $message = 'Регистрация успешна! Теперь вы можете войти.';
+                $messageType = 'success';
             }
         } else {
             $message = 'Пожалуйста, заполните все поля.';
+            $messageType = 'error';
         }
     }
 
@@ -59,9 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             if (!$userFound) {
                 $message = 'Неверный Email или пароль.';
+                $messageType = 'error';
             }
         } else {
             $message = 'Пожалуйста, заполните все поля.';
+            $messageType = 'error';
         }
     }
 }
@@ -72,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/error.css">
     <title>Авторизация и регистрация</title>
 </head>
 <body>
@@ -104,9 +110,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     </div>
 </div>
 
-<?php if ($message): ?>
-    <p class="message"><?= htmlspecialchars($message) ?></p>
+<?php if (isset($message) && isset($messageType)): ?>
+    <div id="toast" class="toast <?= $messageType ?>"><?= htmlspecialchars($message) ?></div>
 <?php endif; ?>
+
+<script>
+    <?php if (isset($message) && isset($messageType)): ?>
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() {
+        toast.classList.remove('show');
+    }, 3000);
+    <?php endif; ?>
+</script>
 <script src="js/main.js"></script>
 </body>
 </html>

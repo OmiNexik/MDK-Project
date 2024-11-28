@@ -2,7 +2,7 @@
 html, body {
   position: relative;
   min-height: 100vh;
-  background-image: url(img/Background.png);
+  background-image: url(../img/Background.png);
   display: flex;
   align-items: center;
   justify-content: center;

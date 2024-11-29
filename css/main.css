@@ -253,6 +253,9 @@ button {
   text-align: left;
   letter-spacing: -0.96px;
   background: linear-gradient(90.31deg, #ffffff, rgba(153, 153, 153, 0.31));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   z-index: 28;
 }
 .digital-revolution {
@@ -269,7 +272,10 @@ button {
   line-height: 21px;
   text-align: left;
   letter-spacing: -0.32px;
-  background: linear-gradient(90deg, #a7a7a7, rgba(173, 173, 173, 0.45));
+  background: linear-gradient(90.31deg, #ffffff, rgba(153, 153, 153, 0.31));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   z-index: 29;
 }
 

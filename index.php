@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user['name'];
-                header('Location: welcome.php');
+                header('Location: index.html');
                 exit;
             } else {
                 $message = 'Неверный Email или пароль.';

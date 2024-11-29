@@ -1,0 +1,164 @@
+.button-3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 4.048px;
+  position: relative;
+  width: 111.048px;
+  z-index: 12;
+  overflow: hidden;
+}
+.button-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 4.048px;
+  position: relative;
+  width: 94px;
+  z-index: 10;
+}
+.button-6 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  gap: 8.096px;
+  position: relative;
+  width: 374.193px;
+  z-index: 17;
+}
+.button-9 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 4.048px;
+  position: relative;
+  width: 224px;
+  height: 52px;
+  padding: 8.096px 12.144px 8.096px 12.144px;
+  background: #f14141;
+  z-index: 22;
+  border-radius: 3.036px;
+}
+.button-a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 4.048px;
+  position: relative;
+  width: 90px;
+  height: 52px;
+  padding: 8.096px 12.144px 8.096px 12.144px;
+  border: 0.51px solid #f14141;
+  z-index: 24;
+  border-radius: 3.036px;
+}
+.description-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 16.193px;
+  position: absolute;
+  width: 640px;
+  height: 383px;
+  top: 24px;
+  left: 0;
+  z-index: 26;
+}
+.button-c {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 12.144px;
+  position: relative;
+  width: 267.144px;
+  z-index: 30;
+}
+.button-d {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 4.048px;
+  position: relative;
+  width: 152px;
+  height: 49px;
+  padding: 8.096px 12px 8.096px 12.144px;
+  background: #f14141;
+  z-index: 31;
+  border-radius: 3.036px;
+}
+.button-10 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 4.048px;
+  position: relative;
+  width: 103px;
+  height: 50px;
+  padding: 8.096px 12.144px 8.096px 12.144px;
+  border: 0.51px solid #f14141;
+  z-index: 36;
+  border-radius: 3.036px;
+}
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 4.048px;
+  position: relative;
+  width: 92px;
+  height: 30px;
+  padding: 2.024px 4.048px 2.024px 4.048px;
+  background: #242222;
+  z-index: 6;
+  overflow: hidden;
+  border-radius: 7px;
+}
+.button-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 4.048px;
+  position: relative;
+  width: 78px;
+  z-index: 8;
+}
+.tv-show:hover,
+.movies:hover,
+.more:hover,
+.icon:hover {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+.button-9:hover{
+  background-color: #ff0000;
+  transition: background-color 0.3s ease;
+}
+.button-a:hover{
+  background-color: #97979730;
+  transition: background-color 0.3s ease;
+}
+.button-d:hover{
+  background-color: #ff0000;
+  transition: background-color 0.3s ease;
+}
+.button-10:hover{
+  background-color: #97979730;
+  transition: background-color 0.3s ease;
+}

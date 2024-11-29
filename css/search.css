@@ -1,0 +1,25 @@
+.search-normal {
+  flex-shrink: 0;
+  position: relative;
+  width: 27px;
+  height: 28px;
+  z-index: 19;
+}
+.search-normal-7 {
+  position: absolute;
+  width: 27px;
+  height: 28px;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+.search-normal-8 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url(/img/lypa.png);
+  background-size: 100% 100%;
+  z-index: 21;
+}

@@ -1,0 +1,326 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+    "Source Han Sans CN", sans-serif;
+    background-color: #101010;
+}
+
+.main-container {
+  overflow: hidden;
+}
+
+.main-container,
+.main-container * {
+  box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: 0;
+}
+
+.main-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-left: 0px;
+  background: #0f0f0f;
+  overflow: hidden;
+}
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 20.241px;
+  position: relative;
+  width: 1160px;
+  height: 60px;
+  margin: 19px 0 0 140px;
+  padding: 16.193px 0 16.193px 0;
+  z-index: 2;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 2.024px;
+  position: relative;
+  width: 215px;
+  z-index: 3;
+}
+.logotype {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  width: 215px;
+  height: 36px;
+  color: #ffffff;
+  font-family: Metal Mania, var(--default-font-family);
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 20.241px;
+  text-align: left;
+  z-index: 4;
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 0;
+  gap: 16.193px;
+  position: relative;
+  min-width: 0;
+  z-index: 5;
+}
+
+.main-page {
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  height: 13px;
+  color: #ffffff;
+  font-family: Inter, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 12.144px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.4px;
+  z-index: 7;
+}
+
+.tv-show {
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  height: 13px;
+  color: #878787;
+  font-family: Inter, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 12.144px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.4px;
+  z-index: 9;
+}
+
+.movies {
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  height: 13px;
+  color: #878787;
+  font-family: Inter, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 12.144px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.4px;
+  z-index: 11;
+}
+
+.more {
+  flex-shrink: 0;
+  position: relative;
+  width: 87px;
+  height: 13px;
+  cursor: pointer;
+  color: #878787;
+  font-family: Inter, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 12.144px;
+  white-space: nowrap;
+  letter-spacing: -0.4px;
+  background: transparent;
+  border: none;
+  z-index: 13;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 5.06px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 8.096px 8.096px 8.096px 8.096px;
+  border: 0.51px solid #373737;
+  z-index: 18;
+  border-radius: 4.048px;
+}
+
+
+.register {
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  height: 13px;
+  color: #ffffff;
+  font-family: Inter, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 12.144px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.4px;
+  z-index: 23;
+}
+
+.login {
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  height: 13px;
+  color: #ffffff;
+  font-family: Inter, var(--default-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 12.144px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.4px;
+  z-index: 25;
+}
+.flex-row-fe {
+  position: relative;
+  width: 1077px;
+  height: 407px;
+  margin: 164px 0 0 140px;
+  z-index: 26;
+}
+.image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 5.06px;
+  position: absolute;
+  width: 404px;
+  height: 343px;
+  top: 0;
+  left: 673px;
+}
+.image-b {
+  flex-shrink: 0;
+  position: absolute;
+  width: 809px;
+  height: 660px;
+  top: 50%;
+  left: 50%;
+  background: url(/img/bac.png);
+  background-size: cover;
+  transform: translate(-50.06%, -46.89%);
+  z-index: 1;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 12.144px;
+  position: relative;
+  width: 640px;
+  z-index: 27;
+}
+.movies-search-quality {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  width: 608px;
+  height: 119px;
+  font-family: Inter, var(--default-font-family);
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 43px;
+  text-align: left;
+  letter-spacing: -0.96px;
+  background: linear-gradient(90.31deg, #ffffff, rgba(153, 153, 153, 0.31));
+  z-index: 28;
+}
+.digital-revolution {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  width: 590px;
+  height: 84px;
+  font-family: Inter, var(--default-font-family);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  text-align: left;
+  letter-spacing: -0.32px;
+  background: linear-gradient(90deg, #a7a7a7, rgba(173, 173, 173, 0.45));
+  z-index: 29;
+}
+
+.catalog {
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  height: 13px;
+  color: #ffffff;
+  font-family: Inter, var(--default-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 12.144px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: -0.36px;
+  z-index: 32;
+}
+
+.learn-more {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  width: 90px;
+  height: 24px;
+  color: #ffffff;
+  font-family: Inter, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 12px;
+  text-align: center;
+  letter-spacing: -0.28px;
+  z-index: 37;
+}
+
+.explore-movies {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  width: 1210px;
+  height: 160px;
+  margin: 128px 0 0 115px;
+  color: #ffffff;
+  font-family: Inter, var(--default-font-family);
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 81px;
+  text-align: center;
+  letter-spacing: -1.28px;
+  z-index: 61;
+}

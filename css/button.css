@@ -58,6 +58,7 @@
   border: 0.51px solid #f14141;
   z-index: 24;
   border-radius: 3.036px;
+  color: white;
 }
 .description-button {
   display: flex;
@@ -139,6 +140,15 @@
   width: 78px;
   z-index: 8;
 }
+.username-btn {
+  pointer-events: none;
+  cursor: default !important;
+}
+
+.username-btn:hover {
+  background: #f14141 !important;
+  border: 0.51px solid #f14141 !important;
+}
 .tv-show:hover,
 .movies:hover,
 .more:hover,
@@ -161,4 +171,19 @@
 .button-10:hover{
   background-color: #97979730;
   transition: background-color 0.3s ease;
+}
+
+#auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+#user-info {
+  display: none;
+  gap: 10px;
+}
+
+#user-info.visible {
+  display: flex;
+  align-items: center;
 }

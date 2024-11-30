@@ -62,7 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user['name'];
-                header('Location: index.html');
+                echo "<script>
+                    localStorage.setItem('username', '" . addslashes($user['name']) . "');
+                    window.location.href = 'index.html';
+                </script>";
                 exit;
             } else {
                 $message = 'Неверный Email или пароль.';
@@ -130,6 +133,13 @@ $conn->close();
         document.getElementById("toast").classList.remove("show");
     }, 3000);
     <?php endif; ?>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    if (username) {
+        localStorage.setItem('username', username);
+        window.location.href = 'index.html';
+    }
 </script>
 <script src="js/main.js"></script>
 </body>

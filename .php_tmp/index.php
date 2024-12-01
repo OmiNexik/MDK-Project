@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'mail_config.php';
 
 $servername = "localhost";
 $username = "root";
@@ -21,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $password = trim($_POST['password']);
 
         if ($name && $email && $password) {
-            // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
                 $message = 'Пожалуйста, введите корректный email адрес.';
                 $messageType = 'error';
@@ -34,24 +34,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 if ($result->num_rows > 0) {
                     $message = 'Пользователь с таким Email уже зарегистрирован.';
                     $messageType = 'error';
+                    unset($_SESSION['pending_email']); 
                 } else {
+                    $verification_code = sprintf("%06d", mt_rand(0, 999999));
                     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                    $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-                    $stmt->bind_param("sss", $name, $email, $hashedPassword);
+                    
+                    $stmt = $conn->prepare("INSERT INTO users (name, email, password, verification_code, is_verified) VALUES (?, ?, ?, ?, 0)");
+                    $stmt->bind_param("ssss", $name, $email, $hashedPassword, $verification_code);
+                    
                     if ($stmt->execute()) {
-                        $message = 'Регистрация успешна! Теперь вы можете войти.';
-                        $messageType = 'success';
+                        if(sendVerificationCode($email, $verification_code)) {
+                            $_SESSION['pending_email'] = $email;
+                            $message = 'Код подтверждения отправлен на ваш email.';
+                            $messageType = 'success';
+                        } else {
+                            $message = 'Ошибка при отправке кода подтверждения.';
+                            $messageType = 'error';
+                        }
                     } else {
                         $message = 'Произошла ошибка при регистрации.';
                         $messageType = 'error';
                     }
                 }
-
                 $stmt->close();
             }
         } else {
             $message = 'Пожалуйста, заполните все поля.';
             $messageType = 'error';
+        }
+    } elseif ($action === 'verify_code') {
+        $email = $_SESSION['pending_email'] ?? '';
+        $code = trim($_POST['verification_code']);
+        
+        if ($email && $code) {
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND verification_code = ?");
+            $stmt->bind_param("ss", $email, $code);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $stmt = $conn->prepare("UPDATE users SET is_verified = 1, verification_code = NULL WHERE email = ?");
+                $stmt->bind_param("s", $email);
+                if ($stmt->execute()) {
+                    unset($_SESSION['pending_email']);
+                    $message = 'Email успешно подтвержден! Теперь вы можете войти.';
+                    $messageType = 'success';
+                }
+            } else {
+                $message = 'Неверный код подтверждения.';
+                $messageType = 'error';
+            }
+            $stmt->close();
         }
     }
 
@@ -60,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $password = trim($_POST['password']);
 
         if ($email && $password) {
-            // Validate email format
             if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
                 $message = 'Пожалуйста, введите корректный email адрес.';
                 $messageType = 'error';
@@ -72,22 +104,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $user = $result->fetch_assoc();
 
                 if ($user && password_verify($password, $user['password'])) {
-                    $_SESSION['user'] = $user['name'];
-                    echo "<script>
-                        localStorage.setItem('username', '" . addslashes($user['name']) . "');
-                        window.location.href = 'index.html';
-                    </script>";
-                    exit;
+                    if (!$user['is_verified']) {
+                        $message = 'Пожалуйста, подтвердите ваш email перед входом.';
+                        $messageType = 'error';
+                    } else {
+                        $_SESSION['user'] = $user['name'];
+                        echo "<script>
+                            localStorage.setItem('username', '" . addslashes($user['name']) . "');
+                            window.location.href = 'index.html';
+                        </script>";
+                        exit;
+                    }
                 } else {
                     $message = 'Неверный Email или пароль.';
                     $messageType = 'error';
                 }
-
                 $stmt->close();
             }
-        } else {
-            $message = 'Пожалуйста, заполните все поля.';
-            $messageType = 'error';
         }
     }
 }
@@ -106,6 +139,19 @@ $conn->close();
 </head>
 <body>
 <div class="form-structor">
+    <?php if (isset($_SESSION['pending_email']) && $messageType !== 'error'): ?>
+    <div class="signup">
+        <h2 class="form-title">Подтверждение Email</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="verify_code">
+            <div class="form-holder">
+                <p style="text-align: center; color: #000;">Мы отправили код подтверждения на ваш email:<br><?php echo htmlspecialchars($_SESSION['pending_email']); ?></p>
+                <input type="text" name="verification_code" class="input" placeholder="Введите код подтверждения" required maxlength="6" pattern="[0-9]{6}">
+            </div>
+            <button type="submit" class="submit-btn">Подтвердить</button>
+        </form>
+    </div>
+    <?php else: ?>
     <div class="signup">
         <h2 class="form-title" id="signup">Регистрация</h2>
         <form method="POST">
@@ -132,6 +178,7 @@ $conn->close();
             </form>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php if (isset($message) && isset($messageType)): ?>

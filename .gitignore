@@ -1,21 +1,40 @@
+# Конфиденциальные файлы
 mail_config.php
+.env
 
+# Зависимости
 /vendor/
 composer.lock
 
+# IDE и системные файлы
 .idea/
 .vscode/
 .DS_Store
 *.swp
 *.swo
+*.sublime-*
+*.code-workspace
+.project
+.settings/
 
+# Временные файлы PHP
+.php_tmp/
+*.tmp
+*.temp
+
+# Логи и кэш
 *.log
 /logs/
-/tmp/
-/temp/
-
-*.cache
 .phpunit.result.cache
+.php_cs.cache
 
+# Локальные конфигурации
 config.local.php
 *.local.php
+fiveserver.config.js
+
+# Другие файлы
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log

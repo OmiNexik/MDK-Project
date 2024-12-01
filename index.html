@@ -32,20 +32,22 @@
           </div>
         </div>
         <div class="button-6">
-          <div class="icon">
-            <div class="search-normal">
-              <div class="search-normal-7">
-                <div class="search-normal-8"></div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="icon">
+              <div class="search-normal">
+                <div class="search-normal-7">
+                  <div class="search-normal-8"></div>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="auth-buttons">
-            <button class="button-9" onclick="window.location.href = 'index.php'"><span class="register">Зарегистрироваться</span></button>
-            <button class="button-a" onclick="window.location.href = 'index.php'"><span class="login">Войти</span></button>
-          </div>
-          <div id="user-info" style="display: none;">
-            <button class="button-a username-btn"><span id="username-display"></span></button>
-            <button class="button-a" onclick="handleLogout()"><span class="logout">Выход</span></button>
+            <div id="auth-buttons">
+              <button class="button-9" onclick="window.location.href = 'index.php'"><span class="register">Зарегистрироваться</span></button>
+              <button class="button-a" onclick="window.location.href = 'index.php'"><span class="login">Войти</span></button>
+            </div>
+            <div id="user-info" style="display: none;">
+              <button class="button-a username-btn"><span class="login" id="username-display"></span></button>
+              <button class="button-a" onclick="handleLogout()"><span class="login">Выход</span></button>
+            </div>
           </div>
         </div>
       </div>

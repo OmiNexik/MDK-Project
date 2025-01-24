@@ -199,9 +199,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         $message = 'Пожалуйста, подтвердите ваш email перед входом.';
                         $messageType = 'error';
                     } else {
-                        $_SESSION['user'] = $user['name'];
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['username'] = $user['name'];
+                        $_SESSION['is_admin'] = $user['is_admin'];
                         echo "<script>
                             localStorage.setItem('username', '" . addslashes($user['name']) . "');
+                            localStorage.setItem('isAdmin', '" . ($user['is_admin'] ? 'true' : 'false') . "');
                             window.location.href = 'index.html';
                         </script>";
                         exit;
@@ -464,7 +467,6 @@ $conn->close();
                 </form>
             </div>
 
-            <!-- Обновляем форму ввода кода и нового пароля -->
             <div class="reset-password-section" id="resetPasswordSection" style="display: <?php echo isset($_SESSION['reset_email']) ? 'block' : 'none'; ?>;">
                 <h3><i class="fas fa-lock"></i>Сброс пароля</h3>
                 <form method="post" action="" id="resetPasswordForm">

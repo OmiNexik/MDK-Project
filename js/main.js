@@ -4,9 +4,9 @@ const signupBtn = document.getElementById('signup');
 loginBtn.addEventListener('click', (e) => {
 	let parent = e.target.parentNode.parentNode;
 	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
-		if(element !== "slide-up") {
+		if (element !== "slide-up") {
 			parent.classList.add('slide-up')
-		}else{
+		} else {
 			signupBtn.parentNode.classList.add('slide-up')
 			parent.classList.remove('slide-up')
 		}
@@ -16,11 +16,27 @@ loginBtn.addEventListener('click', (e) => {
 signupBtn.addEventListener('click', (e) => {
 	let parent = e.target.parentNode;
 	Array.from(e.target.parentNode.classList).find((element) => {
-		if(element !== "slide-up") {
+		if (element !== "slide-up") {
 			parent.classList.add('slide-up')
-		}else{
+		} else {
 			loginBtn.parentNode.parentNode.classList.add('slide-up')
 			parent.classList.remove('slide-up')
 		}
+	});
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+	const indicators = document.querySelectorAll('.indicator, .indicator-11, .indicator-12, .indicator-13, .indicator-14, .indicator-15, .indicator-16');
+
+	indicators.forEach(indicator => {
+		const originalColor = indicator.style.backgroundColor;
+
+		indicator.addEventListener('mouseover', function () {
+			indicator.style.backgroundColor = 'red';
+		});
+
+		indicator.addEventListener('mouseout', function () {
+			indicator.style.backgroundColor = originalColor;
+		});
 	});
 });

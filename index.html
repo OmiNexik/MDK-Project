@@ -46,6 +46,7 @@
             </div>
             <div id="user-info" style="display: none;">
               <button class="button-a username-btn"><span class="login" id="username-display"></span></button>
+              <button class="button-a admin-panel-btn" style="display: none;" onclick="window.location.href='admin.php'"><span class="login">Админ</span></button>
               <button class="button-a" onclick="handleLogout()"><span class="login">Выход</span></button>
             </div>
           </div>
@@ -93,6 +94,10 @@
           document.getElementById('auth-buttons').style.display = 'none';
           document.getElementById('user-info').style.display = 'flex';
           document.getElementById('username-display').textContent = username;
+          const isAdmin = localStorage.getItem('isAdmin');
+          if (isAdmin === 'true') {
+            document.querySelector('.admin-panel-btn').style.display = 'inline-block';
+          }
         } else {
           document.getElementById('auth-buttons').style.display = 'flex';
           document.getElementById('user-info').style.display = 'none';
@@ -105,6 +110,7 @@
 
       const handleLogout = () => {
         localStorage.removeItem('username');
+        localStorage.removeItem('isAdmin');
         window.location.href = 'index.php';
       }
     </script>

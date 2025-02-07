@@ -86,33 +86,238 @@
         </div>
       </div>
       <span class="explore-movies">Исследуйте ассортимент фильмов категории и разных жанров</span>
+      
+      <!-- Movie Slider Container -->
+      <div class="movie-slider-container">
+        <div class="movie-slider" id="movieSlider">
+          <!-- Movies will be loaded here dynamically -->
+        </div>
+        <!-- Navigation Arrows -->
+        <button class="slider-arrow prev">❮</button>
+        <button class="slider-arrow next">❯</button>
+      </div>
     </div>
+    
+    <style>
+      .movie-slider-container {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+        margin-top: 30px;
+        overflow: hidden;
+      }
+
+      .movie-slider {
+        display: flex;
+        position: relative;
+        gap: 20px;
+        transition: transform 0.5s ease;
+        padding: 20px 0;
+      }
+
+      .movie-card {
+        flex: 0 0 250px;
+        width: 250px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #1a1a1a;
+        transition: transform 0.3s ease;
+      }
+
+      .movie-card:hover {
+        transform: scale(1.05);
+      }
+
+      .movie-card img {
+        width: 100%;
+        height: 375px;
+        object-fit: cover;
+      }
+
+      .movie-info {
+        padding: 15px;
+      }
+
+      .movie-info h3 {
+        margin: 0;
+        color: white;
+        font-size: 18px;
+      }
+
+      .movie-info p {
+        margin: 5px 0 0;
+        color: #888;
+        font-size: 14px;
+      }
+
+      .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        transition: background 0.3s ease;
+      }
+
+      .slider-arrow:hover {
+        background: rgba(0, 0, 0, 0.8);
+      }
+
+      .prev {
+        left: 10px;
+      }
+
+      .next {
+        right: 10px;
+      }
+    </style>
+
     <script>
-      const checkAuth = () => {
-        const username = localStorage.getItem('username');
-        if (username) {
-          document.getElementById('auth-buttons').style.display = 'none';
-          document.getElementById('user-info').style.display = 'flex';
-          document.getElementById('username-display').textContent = username;
-          const isAdmin = localStorage.getItem('isAdmin');
-          if (isAdmin === 'true') {
-            document.querySelector('.admin-panel-btn').style.display = 'inline-block';
+      document.addEventListener('DOMContentLoaded', () => {
+        loadMoviesAndInitSlider();
+      });
+
+      function loadMoviesAndInitSlider() {
+        fetch('load_movies.php')
+          .then(response => response.json())
+          .then(data => {
+            if (data.success && data.movies.length > 0) {
+              const slider = document.getElementById('movieSlider');
+              
+              data.movies.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'movie-card';
+                movieCard.innerHTML = `
+                  <img src="${movie.image_url}" alt="${movie.title}">
+                  <div class="movie-info">
+                    <h3>${movie.title}</h3>
+                    <p>${movie.genre} • ${movie.release_year}</p>
+                  </div>
+                `;
+                slider.appendChild(movieCard);
+              });
+
+              initSlider();
+            }
+          })
+          .catch(error => console.error('Error loading movies:', error));
+      }
+
+      function initSlider() {
+        const sliderContainer = document.querySelector('.movie-slider-container');
+        const slider = document.querySelector('.movie-slider');
+        const prevButton = document.querySelector('.slider-arrow.prev');
+        const nextButton = document.querySelector('.slider-arrow.next');
+        const cards = document.querySelectorAll('.movie-card');
+
+        if (!slider || !prevButton || !nextButton || cards.length === 0) return;
+
+        const originalCards = Array.from(cards);
+        
+        originalCards.forEach(card => {
+          const cloneStart = card.cloneNode(true);
+          const cloneEnd = card.cloneNode(true);
+          slider.insertBefore(cloneStart, slider.firstChild);
+          slider.appendChild(cloneEnd);
+        });
+
+        const cardWidth = 270; 
+        let currentIndex = originalCards.length; 
+        let isTransitioning = false;
+
+        const updateSlider = () => {
+          slider.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+        };
+
+        const moveToCard = (index) => {
+          if (isTransitioning) return;
+          currentIndex = index;
+          isTransitioning = true;
+          updateSlider();
+        };
+
+        const handleTransitionEnd = () => {
+          isTransitioning = false;
+          if (currentIndex <= 0) {
+            slider.style.transition = 'none';
+            currentIndex = originalCards.length;
+            updateSlider();
+            setTimeout(() => {
+              slider.style.transition = 'transform 0.5s ease';
+            }, 10);
+          } else if (currentIndex >= originalCards.length * 2) {
+            slider.style.transition = 'none';
+            currentIndex = originalCards.length;
+            updateSlider();
+            setTimeout(() => {
+              slider.style.transition = 'transform 0.5s ease';
+            }, 10);
           }
-        } else {
-          document.getElementById('auth-buttons').style.display = 'flex';
-          document.getElementById('user-info').style.display = 'none';
-        }
+        };
+
+        slider.style.transition = 'transform 0.5s ease';
+        updateSlider();
+
+        prevButton.addEventListener('click', () => {
+          moveToCard(currentIndex - 1);
+        });
+
+        nextButton.addEventListener('click', () => {
+          moveToCard(currentIndex + 1);
+        });
+
+        slider.addEventListener('transitionend', handleTransitionEnd);
+
+        let autoScrollInterval = setInterval(() => {
+          moveToCard(currentIndex + 1);
+        }, 5000);
+
+        sliderContainer.addEventListener('mouseenter', () => {
+          clearInterval(autoScrollInterval);
+        });
+
+        sliderContainer.addEventListener('mouseleave', () => {
+          autoScrollInterval = setInterval(() => {
+            moveToCard(currentIndex + 1);
+          }, 5000);
+        });
       };
 
-      checkAuth();
-      window.addEventListener('load', checkAuth);
-      window.addEventListener('storage', checkAuth);
+        initSlider();
+
+        const checkAuth = () => {
+          const username = localStorage.getItem('username');
+          if (username) {
+            document.getElementById('auth-buttons').style.display = 'none';
+            document.getElementById('user-info').style.display = 'flex';
+            document.getElementById('username-display').textContent = username;
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (isAdmin === 'true') {
+              document.querySelector('.admin-panel-btn').style.display = 'inline-block';
+            }
+          } else {
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-info').style.display = 'none';
+          }
+        };
+
+        checkAuth();
+        window.addEventListener('storage', checkAuth);
 
       const handleLogout = () => {
         localStorage.removeItem('username');
         localStorage.removeItem('isAdmin');
         window.location.href = 'index.php';
-      }
+      };
     </script>
   </body>
 </html>
